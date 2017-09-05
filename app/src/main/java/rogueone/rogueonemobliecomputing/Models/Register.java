@@ -1,4 +1,4 @@
-package Models;
+package rogueone.rogueonemobliecomputing.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

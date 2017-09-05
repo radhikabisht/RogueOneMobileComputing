@@ -1,4 +1,4 @@
-package Models;
+package rogueone.rogueonemobliecomputing.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,9 +14,6 @@ public class User {
     @SerializedName("password")
     @Expose
     private String Password;
-    @SerializedName("grant_type")
-    @Expose
-    private String GrantType="password";
 
     public User(String username, String password) {
         Username = username;
@@ -37,13 +34,5 @@ public class User {
 
     public void setPassword(String password) {
         Password = password;
-    }
-
-    public String getGrantType() {
-        return GrantType;
-    }
-
-    public void setGrantType(String grantType) {
-        GrantType = grantType;
     }
 }

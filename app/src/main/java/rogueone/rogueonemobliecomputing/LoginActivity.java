@@ -1,23 +1,22 @@
 package rogueone.rogueonemobliecomputing;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import java.io.IOException;
 
-import Interfaces.ConnectionClient;
-import Models.Token;
-import Models.User;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rogueone.rogueonemobliecomputing.Models.Token;
+import rogueone.rogueonemobliecomputing.Models.User;
+import rogueone.rogueonemobliecomputing.Services.RogueOneInterface;
+import rogueone.rogueonemobliecomputing.Services.ServiceGenerator;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.email)
@@ -30,32 +29,16 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             User user = new User(_email.getText().toString(),_password.getText().toString());
-            Call<Token> login = ConnectionClient.getClient().login(user.getUsername(),user.getPassword(),user.getGrantType());
-            login.enqueue(new Callback<Token>() {
-                @Override
-                public void onResponse(Call<Token> call, Response<Token> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<Token> call, Throwable t) {
-
-                }
-            });
+            RogueOneInterface tokenService = ServiceGenerator.createService(RogueOneInterface.class);
+            Call<Token> call = tokenService.getToken(user.getUsername(),user.getPassword(),"password");
+            try {
+                Token token = call.execute().body();
+                Toast.makeText(getApplicationContext(),token.getAccessToken().toString(),Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
-    (new Callback<Token>() {
-        @Override
-        public void onResponse(Call<Token> call, Response response) {
-            Toast.makeText(getApplicationContext(),response.body().get,Toast.LENGTH_LONG).show();
-            String token = new Gson().fromJson(response.body())
-        }
-
-        @Override
-        public void onFailure(Call call, Throwable t) {
-            Toast.makeText(getApplicationContext(),t.toString(),Toast.LENGTH_LONG).show();
-        }
-    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

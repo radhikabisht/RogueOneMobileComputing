@@ -1,9 +1,12 @@
-package Models;
+package rogueone.rogueonemobliecomputing.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.security.Timestamp;
-import java.util.Date;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
+import java.text.ParseException;
+
 
 /**
  * Created by jayas on 2/09/2017.
@@ -19,9 +22,9 @@ public class Token {
     @SerializedName("userName")
     private String UserName;
     @SerializedName(".issued")
-    private Timestamp Issued;
+    private String Issued;
     @SerializedName(".expires")
-    private Timestamp Expires;
+    private String Expires;
 
     public String getAccessToken() {
         return AccessToken;
@@ -55,19 +58,29 @@ public class Token {
         UserName = userName;
     }
 
-    public Timestamp getIssued() {
+    public String getIssued() {
         return Issued;
     }
 
-    public void setIssued(Timestamp issued) {
+    public void setIssued(String issued) {
         Issued = issued;
     }
 
-    public Timestamp getExpires() {
+    public String getExpires() {
         return Expires;
     }
 
-    public void setExpires(Timestamp expires) {
+    public void setExpires(String expires) {
         Expires = expires;
+    }
+    public boolean tokenExpired() throws ParseException {
+
+        DateTimeFormatter dtf = DateTimeFormatter.RFC_1123_DATE_TIME;
+        LocalDateTime ldt = LocalDateTime.parse(this.Expires, dtf);
+        if(ldt.compareTo(LocalDateTime.now())>0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
