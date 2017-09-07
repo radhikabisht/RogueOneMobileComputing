@@ -25,6 +25,16 @@ public class Token {
     private String Issued;
     @SerializedName(".expires")
     private String Expires;
+    @SerializedName("refresh_token")
+    private String RefreshToken;
+
+    public String getRefreshToken() {
+        return RefreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        RefreshToken = refreshToken;
+    }
 
     public String getAccessToken() {
         return AccessToken;

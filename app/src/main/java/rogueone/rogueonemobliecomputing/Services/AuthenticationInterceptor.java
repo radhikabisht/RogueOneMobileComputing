@@ -20,7 +20,7 @@ public class AuthenticationInterceptor implements Interceptor {
         Request original = chain.request();
         // Request customization: add request headers
         Request.Builder requestBuilder = original.newBuilder()
-                .header("Authorization", this.authToken); // <-- this is the important line
+                .header("Authorization", "bearer "+this.authToken); // <-- this is the important line
         Request request = requestBuilder.build();
         return chain.proceed(request);
     }

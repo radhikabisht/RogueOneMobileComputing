@@ -8,11 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Models.Token;
 import rogueone.rogueonemobliecomputing.Models.User;
 import rogueone.rogueonemobliecomputing.Services.RogueOneInterface;
@@ -31,12 +31,20 @@ public class LoginActivity extends AppCompatActivity {
             User user = new User(_email.getText().toString(),_password.getText().toString());
             RogueOneInterface tokenService = ServiceGenerator.createService(RogueOneInterface.class);
             Call<Token> call = tokenService.getToken(user.getUsername(),user.getPassword(),"password");
-            try {
-                Token token = call.execute().body();
-                Toast.makeText(getApplicationContext(),token.getAccessToken().toString(),Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            call.enqueue(new Callback<Token>() {
+                @Override
+                public void onResponse(Call<Token> call, Response<Token> response) {
+                    Token token = response.body();
+                    Toast.makeText(getApplicationContext(),token.getAccessToken().toString(),Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Call<Token> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                }
+            });
+
+
         }
     };
     @Override

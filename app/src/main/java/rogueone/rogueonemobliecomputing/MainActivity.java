@@ -8,11 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Models.Register;
 import rogueone.rogueonemobliecomputing.Services.RogueOneInterface;
 import rogueone.rogueonemobliecomputing.Services.ServiceGenerator;
@@ -35,11 +35,18 @@ public class MainActivity extends AppCompatActivity {
             RogueOneInterface registrationService = ServiceGenerator.createService(RogueOneInterface.class);
             Call reg = registrationService.registerUser(register);
             String body = null;
-            try {
-                body = reg.execute().body().toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            reg.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getBaseContext(),LoginActivity.class));
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                }
+            });
             Toast.makeText(getApplicationContext(),body,Toast.LENGTH_LONG).show();
             startActivity(new Intent(getBaseContext(),LoginActivity.class));
 

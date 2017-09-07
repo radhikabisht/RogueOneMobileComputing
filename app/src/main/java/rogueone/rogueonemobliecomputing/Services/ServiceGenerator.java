@@ -1,5 +1,6 @@
 package rogueone.rogueonemobliecomputing.Services;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import okhttp3.OkHttpClient;
@@ -21,15 +22,20 @@ public class ServiceGenerator {
     private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-    public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null);
+    public static <S> S createService(Class<S> serviceClass,Context context) {
+        return createService(serviceClass, null,null,context);
     }
-    public static <S> S createService(Class<S> serviceClass,final String authToken){
+    public static <S> S createService(Class<S> serviceClass,final String authToken,final String refreshToken,Context context){
         if(!TextUtils.isEmpty(authToken)||authToken!=null){
+
             AuthenticationInterceptor interceptor = new AuthenticationInterceptor(authToken);
             if(!httpClient.interceptors().contains(interceptor)){
                 httpClient.addInterceptor(interceptor);
             }
+
+        }
+        if(!TextUtils.isEmpty(refreshToken)||refreshToken!=null){
+            httpClient.authenticator(new RefreshTokenAuthenticator(httpClient,refreshToken,context));
         }
 
         if(!httpClient.interceptors().contains(logging)){
