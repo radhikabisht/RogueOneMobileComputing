@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Register register =new Register(_email.getText().toString(),_password.getText().toString(),_confirm_password.getText().toString());
-            RogueOneInterface registrationService = ServiceGenerator.createService(RogueOneInterface.class);
+            RogueOneInterface registrationService = ServiceGenerator.createService(RogueOneInterface.class,getApplicationContext());
             Call reg = registrationService.registerUser(register);
             String body = null;
             reg.enqueue(new Callback() {

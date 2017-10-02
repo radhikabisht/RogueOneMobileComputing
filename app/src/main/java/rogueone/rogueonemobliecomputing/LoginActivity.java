@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Models.Token;
 import rogueone.rogueonemobliecomputing.Models.User;
+import rogueone.rogueonemobliecomputing.Services.APIClient;
 import rogueone.rogueonemobliecomputing.Services.RogueOneInterface;
 import rogueone.rogueonemobliecomputing.Services.ServiceGenerator;
 
@@ -29,15 +30,30 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             User user = new User(_email.getText().toString(),_password.getText().toString());
-            RogueOneInterface tokenService = ServiceGenerator.createService(RogueOneInterface.class);
+            RogueOneInterface tokenService = ServiceGenerator.createService(RogueOneInterface.class,getApplicationContext());
             Call<Token> call = tokenService.getToken(user.getUsername(),user.getPassword(),"password");
             call.enqueue(new Callback<Token>() {
                 @Override
                 public void onResponse(Call<Token> call, Response<Token> response) {
                     Token token = response.body();
-                    Toast.makeText(getApplicationContext(),token.getAccessToken().toString(),Toast.LENGTH_LONG).show();
-                }
+                    APIClient client = ServiceGenerator
+                            .createService(APIClient.class,token.getTokenType().concat(token.getAccessToken()),getApplicationContext());
+                    Call info = client.userinfo();
+                    info.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            String userInfo = response.body().toString();
+                            Toast.makeText(getApplicationContext(),userInfo,Toast.LENGTH_LONG).show();
+                        }
 
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+
+                        }
+                    });
+
+
+                }
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
                     Toast.makeText(getApplicationContext(),t.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();

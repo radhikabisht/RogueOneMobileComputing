@@ -1,10 +1,7 @@
 package rogueone.rogueonemobliecomputing.Services;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import java.io.IOException;
-
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -12,7 +9,6 @@ import okhttp3.Response;
 import okhttp3.Route;
 import retrofit2.Call;
 import rogueone.rogueonemobliecomputing.BuildConfig;
-import rogueone.rogueonemobliecomputing.MainActivity;
 import rogueone.rogueonemobliecomputing.Models.Token;
 
 /**
@@ -35,13 +31,17 @@ public class RefreshTokenAuthenticator implements Authenticator {
         if(responseCount(response)>=2){
             return null;
         }
+        Request.Builder builder = response.request().newBuilder();
         SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID,context.MODE_PRIVATE);
+        RogueOneInterface service = ServiceGenerator.createService(RogueOneInterface.class,context);
+
         Call<Token> call =
                 service.refreshToken(refreshToken, "refresh_token");
-        final AccessToken accessToken = call.execute().body();
+        final Token accessToken = call.execute().body();
 
         if (accessToken != null) {
-            // safe new access token (shared pref, account manager, etc)
+            preferences.edit().putString("access_token",accessToken.getAccessToken()).commit();
+            preferences.edit().putString("refresh_token",accessToken.getAccessToken()).commit();
 
             // add auth interceptor using the new access token
             String authToken =
