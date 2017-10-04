@@ -1,4 +1,4 @@
-package rogueone.rogueonemobliecomputing.Services;
+package rogueone.rogueonemobliecomputing.Interfaces;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

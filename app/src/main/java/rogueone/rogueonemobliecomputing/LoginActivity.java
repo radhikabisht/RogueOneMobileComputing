@@ -18,9 +18,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Models.Token;
 import rogueone.rogueonemobliecomputing.Models.User;
-import rogueone.rogueonemobliecomputing.Services.APIClient;
-import rogueone.rogueonemobliecomputing.Services.RogueOneInterface;
-import rogueone.rogueonemobliecomputing.Services.ServiceGenerator;
+import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
+import rogueone.rogueonemobliecomputing.Interfaces.RogueOneInterface;
+import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.email)
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                     Token token = response.body();
                     APIClient client = ServiceGenerator
                             .createService(APIClient.class,token.getTokenType().concat(token.getAccessToken()),getApplicationContext());
+
                     Call info = client.userinfo();
                     info.enqueue(new Callback() {
                         @Override
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     public OnClickListener registerListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
             finish();
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }
