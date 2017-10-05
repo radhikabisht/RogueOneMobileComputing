@@ -10,16 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rogueone.rogueonemobliecomputing.Models.Register;
 import rogueone.rogueonemobliecomputing.Interfaces.RogueOneInterface;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
+import rogueone.rogueonemobliecomputing.Models.Register;
 
 public class RegisterActivity extends AppCompatActivity {
+    private static final String BASE_URL = "http://rogueonemobilecomputing.azurewebsites.net/";
     @BindView(R.id.email)
     EditText _email;
     @BindView(R.id.password)
@@ -30,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button _save;
     @BindView(R.id.login)
     TextView _login;
+    final Gson gson = new Gson();
     public OnClickListener saveData = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -38,6 +42,15 @@ public class RegisterActivity extends AppCompatActivity {
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Creating an Account...");
             progressDialog.show();
+           /* OkHttpClient client = new OkHttpClient();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL).newBuilder();
+            urlBuilder.addQueryParameter("v", "1.0");
+            urlBuilder.addQueryParameter("q", "android");
+            urlBuilder.addQueryParameter("rsz", "8");
+            String url = urlBuilder.build().toString();
+            Request request = new Request.Builder()
+                    .url(BASE_URL)
+                    .build();*/
             Register register =new Register(_email.getText().toString(),_password.getText().toString(),_confirm_password.getText().toString());
             RogueOneInterface registrationService = ServiceGenerator.createService(RogueOneInterface.class,getApplicationContext());
             Call reg = registrationService.registerUser(register);
@@ -62,9 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
     public OnClickListener loginListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             finish();
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
     };
     @Override

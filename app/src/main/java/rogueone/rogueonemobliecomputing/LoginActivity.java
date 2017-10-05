@@ -16,11 +16,10 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rogueone.rogueonemobliecomputing.Models.Token;
-import rogueone.rogueonemobliecomputing.Models.User;
-import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.RogueOneInterface;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
+import rogueone.rogueonemobliecomputing.Models.Token;
+import rogueone.rogueonemobliecomputing.Models.User;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.email)
@@ -31,11 +30,10 @@ public class LoginActivity extends AppCompatActivity {
     Button _login;
     @BindView(R.id.register)
     TextView _register;
+    ProgressDialog progressDialog;
     public OnClickListener loginListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                    R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Logging in...");
             progressDialog.show();
@@ -46,25 +44,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Token> call, Response<Token> response) {
                     Token token = response.body();
-                    APIClient client = ServiceGenerator
-                            .createService(APIClient.class,token.getTokenType().concat(token.getAccessToken()),getApplicationContext());
-
-                    Call info = client.userinfo();
-                    info.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            String userInfo = response.body().toString();
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(),userInfo,Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            progressDialog.dismiss();
-                        }
-                    });
-
-
+                    Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                    intent.putExtra("token",token.getAccessToken());
+                    startActivity(intent);
                 }
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
@@ -89,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
         _login.setOnClickListener(loginListener);
         _register.setOnClickListener(registerListener);
     }
