@@ -43,10 +43,12 @@ public class LoginActivity extends AppCompatActivity {
             call.enqueue(new Callback<Token>() {
                 @Override
                 public void onResponse(Call<Token> call, Response<Token> response) {
-                    Token token = response.body();
-                    Intent intent = new Intent(getBaseContext(),MainActivity.class);
-                    intent.putExtra("token",token.getAccessToken());
-                    startActivity(intent);
+                    if(response.isSuccessful()){
+                        Token token = response.body();
+                        Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                        intent.putExtra("token",token.getAccessToken());
+                        startActivity(intent);
+                    }
                 }
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {

@@ -4,25 +4,27 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
-import rogueone.rogueonemobliecomputing.Models.PendingRequest;
 
 public class PendingActivity extends OptionsMenuActivity {
     ProgressDialog progressDialog;
-    APIClient client;
-    String token;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    @BindView(R.id.pending_requests)
+    RecyclerView _recyView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,12 @@ public class PendingActivity extends OptionsMenuActivity {
         mTitle.setTypeface(tf);
         progressDialog = new ProgressDialog(PendingActivity.this,
                 R.style.AppTheme_Dark_Dialog);
+        ButterKnife.bind(this);
+        List<String> requests = (List<String>)getIntent().getSerializableExtra("requestList");
+        mLayoutManager = new LinearLayoutManager(this);
+        _recyView.setLayoutManager(mLayoutManager);
+        mAdapter = new MyAdapter(requests,client,getApplicationContext());
+        _recyView.setAdapter(mAdapter);
     }
     @Override
     public void startDialog(){
@@ -60,77 +68,5 @@ public class PendingActivity extends OptionsMenuActivity {
     @Override
     public void showErrorToast(Throwable t){
         Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-    }
-    @Override
-    public boolean showFriends() {
-        startDialog();
-        Call<List<String>> call = client.getFriendList();
-        call.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                closeDialog();
-                Intent intent =new Intent(getApplicationContext(),FriendsActivity.class);
-                intent.putExtra("friendList",(Serializable)response.body());
-                intent.putExtra("token",token);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
-    }
-    @Override
-    public boolean showPending() {
-        startDialog();
-        Call<List<PendingRequest>> call = client.getPendingRequests();
-        call.enqueue(new Callback<List<PendingRequest>>() {
-            @Override
-            public void onResponse(Call<List<PendingRequest>> call, Response<List<PendingRequest>> response) {
-                closeDialog();
-                Intent intent =new Intent(getApplicationContext(),PendingActivity.class);
-                intent.putExtra("token",token);
-                intent.putExtra("requestList",(Serializable)response.body());
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-            @Override
-            public void onFailure(Call<List<PendingRequest>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
-    }
-    @Override
-    public boolean connectWithUsers() {
-        startDialog();
-        Call<List<String>> call = client.getAppUsers();
-        call.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                closeDialog();
-                Intent intent = new Intent(getApplicationContext(),ConnectActivity.class);
-                List<String> users = response.body();
-                intent.putExtra("userList",(Serializable)users);
-                intent.putExtra("token",token);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
     }
 }

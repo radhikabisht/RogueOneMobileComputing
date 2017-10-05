@@ -4,9 +4,10 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import rogueone.rogueonemobliecomputing.Models.DiaryEntry;
-import rogueone.rogueonemobliecomputing.Models.PendingRequest;
 import rogueone.rogueonemobliecomputing.Models.Trip;
 
 /**
@@ -25,12 +26,17 @@ public interface APIClient {
     Call<List<Trip>> getTrips();
     //api/User/PendingRequests
     @GET("/api/User/PendingRequests")
-    Call<List<PendingRequest>> getPendingRequests();
+    Call<List<String>> getPendingRequests();
     //api/User/Friends
     @GET("/api/User/FriendList")
     Call<List<String>> getFriendList();
     //api/User/AppUsers
-    @GET("/api/User/getAppUsers")
+    @GET("/api/User/AppUsers")
     Call<List<String>> getAppUsers();
+    //api/User/AddFriend
+    @POST("/api/User/FriendRequest")
+    Call<ResponseBody> SendRequest(@Body String Username);
+    @POST("/api/User/ConfirmRequest")
+    Call<ResponseBody> ConfirmRequest(@Body String Username);
 
 }
