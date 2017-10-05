@@ -48,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getBaseContext(),MainActivity.class);
                         intent.putExtra("token",token.getAccessToken());
                         startActivity(intent);
+                    }else{
+                        progressDialog.dismiss();
                     }
                 }
                 @Override
