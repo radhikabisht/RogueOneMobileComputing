@@ -6,29 +6,63 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
-import rogueone.rogueonemobliecomputing.Models.PendingRequest;
 
 public class ConnectActivity extends OptionsMenuActivity {
     ProgressDialog progressDialog;
-    APIClient client;
-    String token;
+    @BindView(R.id.send_request)
+    Button _sendRequest;
+    @BindView(R.id.search_users)
+    AutoCompleteTextView _search_users;
+    public OnClickListener requestListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startDialog();
+            String acceptor = _search_users.getText().toString();
+            Call<ResponseBody> call = client.SendRequest(acceptor);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.isSuccessful()){
+                        closeDialog();
+                        Toast.makeText(getApplicationContext(),"Request Sent Succesfully",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class).putExtra("token",token));
+                    }else{
+                        closeDialog();
+                            showErrorToast(new Throwable("Request already sent or the action is not allowed"));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    closeDialog();
+                    showErrorToast(t);
+                }
+            });
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
+        ButterKnife.bind(this);
         try{
             token = getIntent().getStringExtra("token");
         }catch(Exception e){
@@ -55,6 +89,7 @@ public class ConnectActivity extends OptionsMenuActivity {
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.search_users);
         textView.setAdapter(adapter);
+        _sendRequest.setOnClickListener(requestListener);
     }
 
     @Override
@@ -70,77 +105,5 @@ public class ConnectActivity extends OptionsMenuActivity {
     @Override
     public void showErrorToast(Throwable t){
         Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-    }
-    @Override
-    public boolean showFriends() {
-        startDialog();
-        Call<List<String>> call = client.getFriendList();
-        call.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                closeDialog();
-                Intent intent =new Intent(getApplicationContext(),FriendsActivity.class);
-                intent.putExtra("friendList",(Serializable)response.body());
-                intent.putExtra("token",token);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
-    }
-    @Override
-    public boolean showPending() {
-        startDialog();
-        Call<List<PendingRequest>> call = client.getPendingRequests();
-        call.enqueue(new Callback<List<PendingRequest>>() {
-            @Override
-            public void onResponse(Call<List<PendingRequest>> call, Response<List<PendingRequest>> response) {
-                closeDialog();
-                Intent intent =new Intent(getApplicationContext(),PendingActivity.class);
-                intent.putExtra("token",token);
-                intent.putExtra("requestList",(Serializable)response.body());
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-            @Override
-            public void onFailure(Call<List<PendingRequest>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
-    }
-    @Override
-    public boolean connectWithUsers() {
-        startDialog();
-        Call<List<String>> call = client.getAppUsers();
-        call.enqueue(new Callback<List<String>>() {
-            @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
-                closeDialog();
-                Intent intent = new Intent(getApplicationContext(),ConnectActivity.class);
-                List<String> users = response.body();
-                intent.putExtra("userList",(Serializable)users);
-                intent.putExtra("token",token);
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-
-            @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
-                closeDialog();
-                showErrorToast(t);
-            }
-        });
-        return true;
     }
 }
