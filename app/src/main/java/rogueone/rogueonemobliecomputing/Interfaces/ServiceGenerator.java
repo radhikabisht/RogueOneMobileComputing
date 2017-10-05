@@ -39,11 +39,10 @@ public class ServiceGenerator {
         }
 
         if(!httpClient.interceptors().contains(logging)){
-
             httpClient.addInterceptor(logging);
-            builder.client(httpClient.build());
-            retrofit = builder.build();
         }
+        builder.client(httpClient.build());
+        retrofit = builder.build();
         return retrofit.create(serviceClass);
     }
 }
