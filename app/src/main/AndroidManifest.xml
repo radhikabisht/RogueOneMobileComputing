@@ -17,22 +17,40 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.Dark">
-
-        </activity>
+            android:theme="@style/AppTheme.Dark" >
+        </activity>>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark" >
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DiaryActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".TripActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".CreateTripActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".ConnectActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".PendingActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".FriendsActivity"
+            android:theme="@style/AppTheme.Dark" />
     </application>
 
 </manifest>

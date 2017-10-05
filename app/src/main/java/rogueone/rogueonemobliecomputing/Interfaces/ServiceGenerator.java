@@ -1,14 +1,12 @@
 package rogueone.rogueonemobliecomputing.Interfaces;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rogueone.rogueonemobliecomputing.BuildConfig;
 
 /**
  * Created by jayas on 5/09/2017.
@@ -16,6 +14,7 @@ import rogueone.rogueonemobliecomputing.BuildConfig;
 
 public class ServiceGenerator {
     private static final String BASE_URL = "http://rogueonemobilecomputing.azurewebsites.net/";
+    //private static final String BASE_URL = "http://10.0.2.2:62303/";
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -27,16 +26,16 @@ public class ServiceGenerator {
     public static <S> S createService(Class<S> serviceClass,Context context) {
         return createService(serviceClass, null,context);
     }
-    public static <S> S createService(Class<S> serviceClass,final String authToken,Context context){
-        if(!TextUtils.isEmpty(authToken)||authToken!=null){
-
+    public static <S> S createService(Class<S> serviceClass,String authToken,Context context){
+        //SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID,context.MODE_PRIVATE);
+        if(!TextUtils.isEmpty(authToken)){
             AuthenticationInterceptor interceptor = new AuthenticationInterceptor(authToken);
             if(!httpClient.interceptors().contains(interceptor)){
                 httpClient.addInterceptor(interceptor);
             }
-            SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID,context.MODE_PRIVATE);
+/*            SharedPreferences preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID,context.MODE_PRIVATE);
             String refreshToken = preferences.getString("refresh_token",null);
-            httpClient.authenticator(new RefreshTokenAuthenticator(httpClient,refreshToken,context));
+            httpClient.authenticator(new RefreshTokenAuthenticator(httpClient,refreshToken,context));*/
         }
 
         if(!httpClient.interceptors().contains(logging)){
