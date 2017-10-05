@@ -38,6 +38,8 @@ public abstract class OptionsMenuActivity extends AppCompatActivity {
             return showFriends();
         }if(id == R.id.pending){
             return showPending();
+        }if(id==R.id.location){
+            return showLocation();
         }
 
         return super.onOptionsItemSelected(item);

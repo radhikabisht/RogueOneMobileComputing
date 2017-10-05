@@ -24,4 +24,12 @@
         android:icon="@drawable/ic_action_friends"
         android:title="@string/action_friends"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/location"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_location"
+        android:title="@string/action_pending"
+        app:showAsAction="always"/>
+
 </menu>
