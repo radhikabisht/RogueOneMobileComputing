@@ -8,8 +8,18 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+=======
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+>>>>>>> master
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,11 +31,19 @@
             android:exported="false"/>
         <activity
             android:name=".LoginActivity"
+<<<<<<< HEAD
             android:theme="@style/AppTheme.Dark"></activity>
         >
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.Dark"></activity>
+=======
+            android:theme="@style/AppTheme.Dark" />
+        >
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.Dark" />
+>>>>>>> master
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -54,9 +72,13 @@
         <activity
             android:name=".FriendsActivity"
             android:theme="@style/AppTheme.Dark" />
+<<<<<<< HEAD
         <activity android:name=".LocationEntryActivity"
             android:theme="@style/AppTheme.Dark"></activity>
 
+=======
+        <activity android:name=".LocationEntryActivity"></activity>
+>>>>>>> master
     </application>
 
 </manifest>

@@ -124,7 +124,10 @@
     <orderEntry type="library" exported="" name="firebase-messaging-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-gass-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="butterknife-annotations-8.8.1" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" exported="" name="ChipsLayoutManager-0.3.7" level="project" />
+=======
+>>>>>>> master
     <orderEntry type="library" exported="" name="play-services-location-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-common-11.0.4" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="exposed-instrumentation-api-publish-0.5" level="project" />
@@ -135,7 +138,10 @@
     <orderEntry type="library" exported="" name="firebase-database-connection-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="threetenabp-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="play-services-gcm-11.0.4" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" exported="" name="circleimageview-2.1.0" level="project" />
+=======
+>>>>>>> master
     <orderEntry type="library" exported="" name="play-services-appinvite-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="firebase-storage-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-11.0.4" level="project" />
@@ -151,7 +157,10 @@
     <orderEntry type="library" exported="" name="support-compat-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="butterknife-8.8.1" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" exported="" name="MaterialChipsInput-1.0.8" level="project" />
+=======
+>>>>>>> master
     <orderEntry type="library" exported="" name="firebase-common-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-vision-11.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-lite-11.0.4" level="project" />

@@ -69,6 +69,8 @@ public abstract class OptionsMenuActivity extends AppCompatActivity implements A
         }
         if (id == R.id.pending) {
             return showPending();
+        }if(id==R.id.location){
+            return showLocation();
         }
         if (id == R.id.checkin) {
             return createCheckIn();

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <component name="libraryTable">
   <library name="play-services-base-11.0.4">
     <CLASSES>
@@ -7,4 +8,15 @@
     <JAVADOC />
     <SOURCES />
   </library>
+=======
+<component name="libraryTable">
+  <library name="play-services-base-11.0.4">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/31c07ab9e53ae3475f1760c4da663a1d46c08ec9/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/31c07ab9e53ae3475f1760c4da663a1d46c08ec9/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+>>>>>>> master
 </component>

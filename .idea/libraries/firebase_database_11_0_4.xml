@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <component name="libraryTable">
   <library name="firebase-database-11.0.4">
     <CLASSES>
@@ -7,4 +8,15 @@
     <JAVADOC />
     <SOURCES />
   </library>
+=======
+<component name="libraryTable">
+  <library name="firebase-database-11.0.4">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/c2f663808873b72c2c8e423b8b37d1ac1dc67ffb/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c2f663808873b72c2c8e423b8b37d1ac1dc67ffb/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+>>>>>>> master
 </component>
