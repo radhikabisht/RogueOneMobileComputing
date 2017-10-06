@@ -8,8 +8,9 @@ import java.util.List;
 
 public class Trip {
     public int TripID;
+    public String TripName;
     public String Destination;
-    public int PlannedDuration;
+    public String PlannedDuration;
     public String StartDate;
     public List<LocationEntry> TripEntries;
     public List<TripMate> TripMates;

@@ -10,10 +10,6 @@ import retrofit2.http.POST;
 import rogueone.rogueonemobliecomputing.Models.LocationEntry;
 import rogueone.rogueonemobliecomputing.Models.Trip;
 
-/**
- * Created by jayas on 7/09/2017.
- */
-
 public interface APIClient {
     //api/Account/UserInfo
     @GET("/api/Account/UserInfo")
@@ -50,5 +46,7 @@ public interface APIClient {
     //api/User/createEntry
     @POST("/api/User/createEntry")
     Call<ResponseBody> createEntry(@Body LocationEntry entry);
-
+    //api/User/createTrip
+    @POST("/api/User/createTrip")
+    Call<ResponseBody> createTrip(@Body Trip trip);
 }
