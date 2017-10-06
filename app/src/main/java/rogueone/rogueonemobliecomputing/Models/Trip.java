@@ -11,7 +11,7 @@ public class Trip {
     public String Destination;
     public int PlannedDuration;
     public String StartDate;
-    public List<DiaryEntry> TripEntries;
+    public List<LocationEntry> TripEntries;
     public List<TripMate> TripMates;
     public String Description;
 }

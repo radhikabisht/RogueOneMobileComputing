@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
@@ -43,6 +41,7 @@ public class FriendsActivity extends OptionsMenuActivity {
         setTitle("LODI");
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.getChildAt(0);
+        mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
         progressDialog = new ProgressDialog(FriendsActivity.this,

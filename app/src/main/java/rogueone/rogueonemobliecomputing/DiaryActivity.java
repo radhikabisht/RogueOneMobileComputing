@@ -33,6 +33,7 @@ public class DiaryActivity extends OptionsMenuActivity {
         setTitle("LODI");
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.getChildAt(0);
+        mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
         progressDialog = new ProgressDialog(DiaryActivity.this,

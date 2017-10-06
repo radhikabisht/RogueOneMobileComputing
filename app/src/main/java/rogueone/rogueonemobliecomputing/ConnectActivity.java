@@ -78,6 +78,7 @@ public class ConnectActivity extends OptionsMenuActivity {
         setTitle("LODI");
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.getChildAt(0);
+        mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
         Intent intent = getIntent();
