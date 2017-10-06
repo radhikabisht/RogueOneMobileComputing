@@ -4,16 +4,27 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
+import rogueone.rogueonemobliecomputing.Models.LocationEntry;
 
 public class DiaryActivity extends OptionsMenuActivity {
     ProgressDialog progressDialog;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    @BindView(R.id.my_entries)
+    RecyclerView _recyView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +47,14 @@ public class DiaryActivity extends OptionsMenuActivity {
         mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
+        ButterKnife.bind(this);
         progressDialog = new ProgressDialog(DiaryActivity.this,
                 R.style.AppTheme_Dark_Dialog);
+        List<LocationEntry> locations = (List<LocationEntry>)getIntent().getSerializableExtra("entries");
+        mLayoutManager = new LinearLayoutManager(this);
+        _recyView.setLayoutManager(mLayoutManager);
+        mAdapter = new DiaryAdapter(locations,client,getApplicationContext());
+        _recyView.setAdapter(mAdapter);
     }
     @Override
     public void startDialog(){

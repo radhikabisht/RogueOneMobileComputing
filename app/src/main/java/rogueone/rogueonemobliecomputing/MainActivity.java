@@ -55,6 +55,7 @@ public class MainActivity extends OptionsMenuActivity
                     List<LocationEntry> entries = response.body();
                     Intent diaryEntries = new Intent(getApplicationContext(),DiaryActivity.class);
                     diaryEntries.putExtra("entries",(Serializable) entries);
+                    diaryEntries.putExtra("token", token);
                     startActivity(diaryEntries);
                     finish();
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -80,6 +81,7 @@ public class MainActivity extends OptionsMenuActivity
                     List<Trip> entries = response.body();
                     Intent tripEntries = new Intent(getApplicationContext(),TripActivity.class);
                     tripEntries.putExtra("entries",(Serializable)entries);
+                    tripEntries.putExtra("token", token);
                     startActivity(tripEntries);
                     finish();
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
