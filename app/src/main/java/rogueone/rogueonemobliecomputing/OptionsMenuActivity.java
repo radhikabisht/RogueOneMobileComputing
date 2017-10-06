@@ -1,5 +1,7 @@
 package rogueone.rogueonemobliecomputing;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +49,30 @@ public abstract class OptionsMenuActivity extends AppCompatActivity {
     protected abstract void startDialog();
     protected abstract void closeDialog();
     protected abstract void showErrorToast(Throwable t);
+
+    public boolean showLocation(){
+        startDialog();
+        Call<List<String>> call = client.getLocationEntry();
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                closeDialog();
+                Intent intent =new Intent(getApplicationContext(),LocationEntryActivity.class);
+                intent.putExtra("token",token);
+                intent.putExtra("locationEntry",(Serializable)response.body());
+                startActivity(intent);
+                finish();
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                closeDialog();
+                showErrorToast(t);
+            }
+        });
+        return true;
+
+    }
 
     public boolean showFriends() {
         startDialog();

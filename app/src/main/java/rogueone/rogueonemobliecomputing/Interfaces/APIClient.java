@@ -33,6 +33,9 @@ public interface APIClient {
     //api/User/AppUsers
     @GET("/api/User/AppUsers")
     Call<List<String>> getAppUsers();
+    //api/User/LocationEntry
+    @GET("/api/User/LocationEntry")
+    Call<List<String>> getLocationEntry();
     //api/User/AddFriend
     @POST("/api/User/FriendRequest")
     Call<ResponseBody> SendRequest(@Body String Username);
