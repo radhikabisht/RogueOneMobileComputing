@@ -7,8 +7,13 @@ import java.io.Serializable;
  */
 
 public class TripMate implements Serializable{
-    public long TripMateID;
+    public long TripMateID=0;
+    public String PhoneNumber;
     public String Name;
-    public long PhoneNumber;
-    public String Email;
+
+    public TripMate(String name, String phoneNumber) {
+        Name = name;
+        PhoneNumber = phoneNumber;
+    }
+
 }

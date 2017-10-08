@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
 
@@ -33,10 +34,12 @@ public class TripActivity extends OptionsMenuActivity {
         setTitle("LODI");
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.getChildAt(0);
+        mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
         progressDialog = new ProgressDialog(TripActivity.this,
                 R.style.AppTheme_Dark_Dialog);
+        ButterKnife.bind(this);
     }
     @Override
     public void startDialog(){

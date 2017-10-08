@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rogueone.rogueonemobliecomputing.Interfaces.APIClient;
 import rogueone.rogueonemobliecomputing.Interfaces.ServiceGenerator;
-import rogueone.rogueonemobliecomputing.Models.DiaryEntry;
+import rogueone.rogueonemobliecomputing.Models.LocationEntry;
 import rogueone.rogueonemobliecomputing.Models.Trip;
 
 public class MainActivity extends OptionsMenuActivity
@@ -47,20 +48,21 @@ public class MainActivity extends OptionsMenuActivity
         @Override
         public void onClick(View v) {
             startDialog();
-            final Call<List<DiaryEntry>> diary = client.getDiaryEntries();
-            diary.enqueue(new Callback<List<DiaryEntry>>() {
+            final Call<List<LocationEntry>> diary = client.getDiaryEntries();
+            diary.enqueue(new Callback<List<LocationEntry>>() {
                 @Override
-                public void onResponse(Call<List<DiaryEntry>> call, Response<List<DiaryEntry>> response) {
+                public void onResponse(Call<List<LocationEntry>> call, Response<List<LocationEntry>> response) {
                     closeDialog();
-                    List<DiaryEntry> entries = response.body();
+                    List<LocationEntry> entries = response.body();
                     Intent diaryEntries = new Intent(getApplicationContext(),DiaryActivity.class);
                     diaryEntries.putExtra("entries",(Serializable) entries);
+                    diaryEntries.putExtra("token", token);
                     startActivity(diaryEntries);
                     finish();
                     overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
                 @Override
-                public void onFailure(Call<List<DiaryEntry>> call, Throwable t) {
+                public void onFailure(Call<List<LocationEntry>> call, Throwable t) {
                     closeDialog();
                     showErrorToast(t);
                 }
@@ -77,12 +79,21 @@ public class MainActivity extends OptionsMenuActivity
                 @Override
                 public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                     closeDialog();
-                    List<Trip> entries = response.body();
-                    Intent tripEntries = new Intent(getApplicationContext(),TripActivity.class);
-                    tripEntries.putExtra("entries",(Serializable)entries);
-                    startActivity(tripEntries);
-                    finish();
-                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                    if(response.isSuccessful()){
+                        List<Trip> entries = response.body();
+                        Intent tripEntries = new Intent(getApplicationContext(),TripActivity.class);
+                        tripEntries.putExtra("entries",(Serializable)entries);
+                        tripEntries.putExtra("token", token);
+                        startActivity(tripEntries);
+                        finish();
+                        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                    }else{
+                        try {
+                            showErrorToast(new Throwable(response.errorBody().string()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 @Override
                 public void onFailure(Call<List<Trip>> call, Throwable t) {
@@ -97,7 +108,9 @@ public class MainActivity extends OptionsMenuActivity
     public OnClickListener newTripListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),CreateTripActivity.class));
+            Intent create = new Intent(getApplicationContext(),CreateTripActivity.class);
+            create.putExtra("token", token);
+            startActivity(create);
             finish();
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }
@@ -145,6 +158,7 @@ public class MainActivity extends OptionsMenuActivity
         setTitle("LODI");
         setSupportActionBar(toolbar);
         TextView mTitle = (TextView) toolbar.getChildAt(0);
+        mTitle.setOnClickListener(homeListener);
         Typeface tf = Typeface.createFromAsset(getAssets(),"fonts/Lobster-Regular.ttf");
         mTitle.setTypeface(tf);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
